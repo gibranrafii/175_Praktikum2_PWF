@@ -32,7 +32,7 @@ class ProductController extends Controller
 
         // Set user_id sesuai user yang sedang login
         $validated['user_id'] = auth()->id();
-        
+
         Product::create($validated);
 
         return redirect()->route('product.index')->with('success', 'Product created successfully.');
@@ -55,6 +55,7 @@ class ProductController extends Controller
     public function update(Request $request, $id)
     {
         $product = Product::findOrFail($id);
+        \Illuminate\Support\Facades\Gate::authorize('update', $product);
 
         $validated = $request->validate([
             'name' => 'sometimes|string|max:255',
@@ -76,6 +77,7 @@ class ProductController extends Controller
 
     public function edit(Product $product)
     {
+        \Illuminate\Support\Facades\Gate::authorize('update', $product);
         $users = User::orderBy('name')->get();
 
         return view('product.edit', compact('product', 'users'));
@@ -84,6 +86,7 @@ class ProductController extends Controller
     public function delete($id)
     {
         $product = Product::findOrFail($id);
+        \Illuminate\Support\Facades\Gate::authorize('delete', $product);
 
         $product->delete();
 

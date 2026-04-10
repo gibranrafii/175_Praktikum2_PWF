@@ -20,6 +20,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // Product Page
+    Route::get('/product/export', function () {
+        return "Berhasil mengekspor produk!";
+    })->name('product.export')->middleware('can:export-product');
+
     Route::get('/product', [ProductController::class, 'index'])->name('product.index');
     Route::post('/product', [ProductController::class, 'store'])->name('product.store');
     Route::get('/product/create', [ProductController::class, 'create'])->name('product.create');
@@ -32,4 +36,4 @@ Route::middleware('auth')->group(function () {
 Route::get('/about', [AboutController::class, 'index'])->name('about');
 
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
